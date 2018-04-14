@@ -5,8 +5,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public MapManager mapManager;
 
-
-	// Use this for initialization
 	void Awake () {
         mapManager = GetComponent<MapManager>();
         InitGame();
@@ -15,9 +13,4 @@ public class GameManager : MonoBehaviour {
     private void InitGame () {
         mapManager.SetupBoard();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
