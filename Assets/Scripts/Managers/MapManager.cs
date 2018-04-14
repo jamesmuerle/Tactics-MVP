@@ -24,9 +24,9 @@ public class MapManager : MonoBehaviour {
 
         for (int x = 0; x < width; x += 1) {
             for (int y = 0; y < height; y += 1) {
-                GameObject instance =
+                GameObject floorInstance =
                     Instantiate(floor, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-                instance.transform.SetParent(mapHolder);
+                floorInstance.transform.SetParent(mapHolder);
             }
         }
     }
@@ -40,12 +40,12 @@ public class MapManager : MonoBehaviour {
     private void AddUnits () {
         unitsHolder = new GameObject("Units").transform;
 
-        GameObject grunt1 =
-            Instantiate(grunt, new Vector3(2, 2, 0), Quaternion.identity) as GameObject;
-        grunt1.transform.SetParent(unitsHolder);
-
-        GameObject grunt2 =
-            Instantiate(grunt, new Vector3(6, 0, 0), Quaternion.identity) as GameObject;
-        grunt2.transform.SetParent(unitsHolder);
+        //for (int x = 0; x < width; x += 1) {
+            //for (int y = 0; y < height; y += 1) {
+                GameObject gruntInstance =
+                    Instantiate(grunt, new Vector3(1, 1, 0f), Quaternion.identity) as GameObject;
+                gruntInstance.transform.SetParent(unitsHolder);
+            //}
+       // }
     }
 }
