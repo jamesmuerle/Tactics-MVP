@@ -40,12 +40,12 @@ public class MapManager : MonoBehaviour {
     private void AddUnits () {
         unitsHolder = new GameObject("Units").transform;
 
-        //for (int x = 0; x < width; x += 1) {
-            //for (int y = 0; y < height; y += 1) {
+        for (int x = 0; x < width; x += 1) {
+            for (int y = 0; y < height; y += 1) {
                 GameObject gruntInstance =
-                    Instantiate(grunt, new Vector3(1, 1, 0f), Quaternion.identity) as GameObject;
+                    Instantiate(grunt, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
                 gruntInstance.transform.SetParent(unitsHolder);
-            //}
-       // }
+            }
+        }
     }
 }

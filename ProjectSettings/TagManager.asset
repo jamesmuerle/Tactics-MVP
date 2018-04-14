@@ -47,3 +47,6 @@ TagManager:
   - name: Units
     uniqueID: 3167464005
     locked: 0
+  - name: Highlight
+    uniqueID: 4110789905
+    locked: 0
