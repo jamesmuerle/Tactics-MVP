@@ -144,6 +144,7 @@ MonoBehaviour:
   width: 8
   height: 8
   floor: {fileID: 1645292641620530, guid: 86e2138590195624d9eb8dabbf5847fb, type: 2}
+  grunt: {fileID: 1771641281817370, guid: c167307365658a0479bae8a778a23eda, type: 2}
 --- !u!114 &648850404
 MonoBehaviour:
   m_ObjectHideFlags: 0
