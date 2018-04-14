@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitProperties : MonoBehaviour {
-    
+public class Unit : MonoBehaviour {
+    void OnMouseEnter () {
+    }
+
+    void OnMouseExit () {
+        
+    }
 }
