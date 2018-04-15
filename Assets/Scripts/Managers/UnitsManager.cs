@@ -60,30 +60,42 @@ public class UnitsManager : MonoBehaviour {
         }
         else if (selectedUnit) {
             Vector2Int oldPos = selectedUnit.GetPosition();
-            path.ExecuteMove(selectedUnit);
+            Vector2Int newPos = path.ExecuteMove();
             units[oldPos.x, oldPos.y] = null;
-            units[x, y] = selectedUnit;
-            selectedUnit.isSelected = false;
-            selectedUnit.isHovered = true;
-            selectedUnit = null;
+            units[newPos.x, newPos.y] = selectedUnit;
+            if (newPos == new Vector2Int(x, y)) {
+                selectedUnit.isHovered = true;
+            }
+            DeselectUnit();
         }
     }
 
     private void HandleUnitClicked(Unit clickedUnit) {
         if (clickedUnit == selectedUnit) {
-            clickedUnit.isSelected = false;
-            selectedUnit = null;
+            DeselectUnit();
             path.Empty();
         }
         else {
             if (selectedUnit) {
-                selectedUnit.isSelected = false;
+                DeselectUnit();
             }
 
-            clickedUnit.isSelected = true;
-            selectedUnit = clickedUnit;
-            path.SetStartPosition(clickedUnit.transform.position);
+            SelectUnit(clickedUnit);
+            path.SetSourceUnit(clickedUnit);
         }
+    }
+
+    private void DeselectUnit() {
+        selectedUnit.isSelected = false;
+        selectedUnit = null;
+        mapManager.ClearHighlights();
+    }
+
+    private void SelectUnit(Unit unitToSelect) {
+        unitToSelect.isSelected = true;
+        unitToSelect.isMoving = true;
+        selectedUnit = unitToSelect;
+        mapManager.HighlightMovementRange(unitToSelect);
     }
 
     private void HandlePosEntered(int x, int y) {

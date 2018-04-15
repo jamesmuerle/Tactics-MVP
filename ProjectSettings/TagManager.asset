@@ -41,12 +41,15 @@ TagManager:
   - name: Floor
     uniqueID: 1951130101
     locked: 0
+  - name: FloorHighlight
+    uniqueID: 1609892019
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Units
     uniqueID: 3167464005
     locked: 0
-  - name: Highlight
+  - name: UnitHighlight
     uniqueID: 4110789905
     locked: 0

@@ -13,28 +13,27 @@ public class PathContainer : MonoBehaviour {
     private static Vector2Int SOUTH = new Vector2Int(0, -1);
     private static Vector2Int EAST = new Vector2Int(1, 0);
 
-    private Vector2Int startPosition = Vector2Int.zero;
+    private Unit sourceUnit;
     private List<Vector2Int> path = new List<Vector2Int>();
 
-    public void SetStartPosition(Vector3 pos) {
+    public void SetSourceUnit(Unit unit) {
         Empty();
-        startPosition = TranslateTo2D(pos);
+        sourceUnit = unit;
     }
 
     public void GoToPosition(Vector2Int targetPos) {
-        if (targetPos == startPosition) {
+        if (targetPos == sourceUnit.GetPosition()) {
             Empty();
         }
         else {
-            int pathSize = path.Count;
-
             int alreadyExistsIndex = path.FindIndex(vector => vector == targetPos);
             if (alreadyExistsIndex != -1) {
-                path.RemoveRange(alreadyExistsIndex, pathSize - alreadyExistsIndex);
+                path.RemoveRange(alreadyExistsIndex, path.Count - alreadyExistsIndex);
             }
-
-            path.Add(targetPos);
-            RedrawPath();
+            if (path.Count < sourceUnit.movementRange) {
+                path.Add(targetPos);
+                RedrawPath();
+            }
         }
     }
 
@@ -50,6 +49,7 @@ public class PathContainer : MonoBehaviour {
 
         int pathSize = path.Count;
         if (pathSize > 0) {
+            Vector2Int startPosition = sourceUnit.GetPosition();
             AddPathStart(startPosition, path[0]);
 
             Vector2Int prevPosition = startPosition;
@@ -158,9 +158,10 @@ public class PathContainer : MonoBehaviour {
         return new Vector2Int((int) pos.x, (int) pos.y);
     }
 
-    public void ExecuteMove(Unit unitToMove) {
+    public Vector2Int ExecuteMove() {
         Vector2Int targetPos = path[path.Count - 1];
-        unitToMove.transform.position = new Vector3(targetPos.x, targetPos.y, 0);
+        sourceUnit.MoveThroughPath(path);
         Empty();
+        return targetPos;
     }
 }
