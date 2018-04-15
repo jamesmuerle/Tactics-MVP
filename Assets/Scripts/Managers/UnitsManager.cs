@@ -85,6 +85,9 @@ public class UnitsManager : MonoBehaviour {
             units[oldPos.x, oldPos.y] = null;
             units[newPos.x, newPos.y] = selectedUnit;
         }
+        else {
+            selectedUnit.isMoving = false;
+        }
         DeselectUnit();
     }
 

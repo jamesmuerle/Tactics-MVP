@@ -30,6 +30,27 @@ public class PathContainer : MonoBehaviour {
             if (alreadyExistsIndex != -1) {
                 path.RemoveRange(alreadyExistsIndex, path.Count - alreadyExistsIndex);
             }
+
+            Vector2Int changeVector = targetPos - GetTarget();
+            while (changeVector.magnitude > 1 && path.Count < sourceUnit.movementRange) {
+                if (changeVector.x > 0) {
+                    GoToPosition(GetTarget() + EAST);
+                    changeVector -= EAST;
+                }
+                else if (changeVector.x < 0) {
+                    GoToPosition(GetTarget() + WEST);
+                    changeVector -= WEST;
+                }
+                else if (changeVector.y > 0) {
+                    GoToPosition(GetTarget() + NORTH);
+                    changeVector -= NORTH;
+                }
+                else if (changeVector.y < 0) {
+                    GoToPosition(GetTarget() + SOUTH);
+                    changeVector -= SOUTH;
+                }
+            }
+
             if (path.Count < sourceUnit.movementRange) {
                 path.Add(targetPos);
                 RedrawPath();
@@ -151,6 +172,9 @@ public class PathContainer : MonoBehaviour {
     }
 
     private int ThrowBadDirectionException(Vector2Int direction) {
+        foreach (Vector2Int vector in path) {
+            print(vector);
+        }
         throw new System.Exception("Got a bad direction vector: " + direction);
     }
 
@@ -163,6 +187,11 @@ public class PathContainer : MonoBehaviour {
     }
 
     public Vector2Int GetTarget() {
-        return path[path.Count - 1];
+        if (path.Count > 0) {
+            return path[path.Count - 1];
+        }
+        else {
+            return sourceUnit.GetPosition();
+        }
     }
 }
