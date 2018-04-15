@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 648850405}
   - component: {fileID: 648850404}
+  - component: {fileID: 648850406}
   - component: {fileID: 648850403}
   m_Layer: 0
   m_Name: GameManager
@@ -144,7 +145,6 @@ MonoBehaviour:
   width: 8
   height: 8
   floor: {fileID: 1645292641620530, guid: 86e2138590195624d9eb8dabbf5847fb, type: 2}
-  grunt: {fileID: 1771641281817370, guid: c167307365658a0479bae8a778a23eda, type: 2}
 --- !u!114 &648850404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f75e87b92ab4964baabb5e301f43f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapManager: {fileID: 0}
+  mapManager: {fileID: 648850403}
+  unitsManager: {fileID: 648850406}
 --- !u!4 &648850405
 Transform:
   m_ObjectHideFlags: 0
@@ -170,6 +171,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &648850406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 648850402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af014e6839829b3468b3b26f96bd5855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapManager: {fileID: 648850403}
+  grunt: {fileID: 1771641281817370, guid: c167307365658a0479bae8a778a23eda, type: 2}
 --- !u!1 &1107976972
 GameObject:
   m_ObjectHideFlags: 0

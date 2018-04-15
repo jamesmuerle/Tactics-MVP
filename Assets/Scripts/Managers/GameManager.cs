@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     public MapManager mapManager;
+    public UnitsManager unitsManager;
 
 	void Awake () {
         mapManager = GetComponent<MapManager>();
@@ -12,5 +13,6 @@ public class GameManager : MonoBehaviour {
 
     private void InitGame () {
         mapManager.SetupBoard();
+        unitsManager.SetupUnits();
     }
 }
