@@ -6,10 +6,6 @@ public class UnitHighlighter : MonoBehaviour {
     public SpriteRenderer unitSpriteRenderer;
     private SpriteMask mask;
 
-    public UnitHighlighter(GameObject unitToHighlight) : base() {
-        unitSpriteRenderer = unitToHighlight.GetComponent<SpriteRenderer>();
-    }
-
     void Awake() {
         mask = GetComponent<SpriteMask>();
     }
