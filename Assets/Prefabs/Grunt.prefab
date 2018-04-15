@@ -73,7 +73,7 @@ MonoBehaviour:
   highlightPrefab: {fileID: 114872103858794992, guid: 3c78a6b03650e224f8c5e0c988fb8f68,
     type: 2}
   unitAnimator: {fileID: 95136228354366732}
-  movementRange: 2
+  movementRange: 4
 --- !u!212 &212922715349791834
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -158,10 +158,11 @@ public class PathContainer : MonoBehaviour {
         return new Vector2Int((int) pos.x, (int) pos.y);
     }
 
-    public Vector2Int ExecuteMove() {
-        Vector2Int targetPos = path[path.Count - 1];
-        sourceUnit.MoveThroughPath(path);
-        Empty();
-        return targetPos;
+    public List<Vector2Int> GetPath() {
+        return path;
+    }
+
+    public Vector2Int GetTarget() {
+        return path[path.Count - 1];
     }
 }

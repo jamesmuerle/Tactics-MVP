@@ -59,21 +59,13 @@ public class UnitsManager : MonoBehaviour {
             HandleUnitClicked(unitAtPos);
         }
         else if (selectedUnit) {
-            Vector2Int oldPos = selectedUnit.GetPosition();
-            Vector2Int newPos = path.ExecuteMove();
-            units[oldPos.x, oldPos.y] = null;
-            units[newPos.x, newPos.y] = selectedUnit;
-            if (newPos == new Vector2Int(x, y)) {
-                selectedUnit.isHovered = true;
-            }
-            DeselectUnit();
+            HandleTileClicked(new Vector2Int(x, y));
         }
     }
 
     private void HandleUnitClicked(Unit clickedUnit) {
         if (clickedUnit == selectedUnit) {
             DeselectUnit();
-            path.Empty();
         }
         else {
             if (selectedUnit) {
@@ -85,9 +77,21 @@ public class UnitsManager : MonoBehaviour {
         }
     }
 
+    private void HandleTileClicked(Vector2Int clickedPosition) {
+        Vector2Int oldPos = selectedUnit.GetPosition();
+        Vector2Int newPos = path.GetTarget();
+        if (newPos == clickedPosition) {
+            selectedUnit.MoveThroughPath(path.GetPath());
+            units[oldPos.x, oldPos.y] = null;
+            units[newPos.x, newPos.y] = selectedUnit;
+        }
+        DeselectUnit();
+    }
+
     private void DeselectUnit() {
         selectedUnit.isSelected = false;
         selectedUnit = null;
+        path.Empty();
         mapManager.ClearHighlights();
     }
 
