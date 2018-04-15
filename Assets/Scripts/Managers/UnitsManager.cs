@@ -69,6 +69,7 @@ public class UnitsManager : MonoBehaviour {
         }
         else {
             if (selectedUnit) {
+                selectedUnit.isMoving = false;
                 DeselectUnit();
             }
 
