@@ -6,9 +6,6 @@ using UnityEngine.Events;
 public class Unit : MonoBehaviour {
     public UnitHighlighter highlightPrefab;
 
-    private class UnitEvent : UnityEvent<Unit> { }
-    public UnityEvent<Unit> unitClicked = new UnitEvent();
-
     private UnitHighlighter currentHighlight;
 
     private bool _isSelected = false;
@@ -17,30 +14,29 @@ public class Unit : MonoBehaviour {
             return _isSelected;
         }
         set {
-            SetSelected(value);
+            _isSelected = value;
+            UpdateHighlightState();
         }
     }
 
-    private void SetSelected(bool isSelected) {
-        _isSelected = isSelected;
-        if (!isSelected) {
+    private bool _isHovered = false;
+    public bool isHovered {
+        get {
+            return _isHovered;
+        }
+        set {
+            _isHovered = value;
+            UpdateHighlightState();
+        }
+    }
+
+    private void UpdateHighlightState() {
+        print("Updating highlight state with hovered=" + _isHovered + " and selected=" + _isSelected);
+        if (currentHighlight && !_isHovered && !_isSelected) {
             DestroyHighlight();
         }
-    }
-
-    private void OnMouseEnter () {
-        if (!_isSelected) {
-            currentHighlight =
-                Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity);
-            currentHighlight.unitSpriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-            currentHighlight.gameObject.transform.SetParent(this.transform);
-            currentHighlight.gameObject.transform.localPosition = Vector3.zero;
-        }
-    }
-
-    private void OnMouseExit () {
-        if (!_isSelected) {
-            DestroyHighlight();
+        else if (!currentHighlight && (_isHovered || _isSelected)) {
+            CreateHighlight();
         }
     }
 
@@ -49,7 +45,16 @@ public class Unit : MonoBehaviour {
         currentHighlight = null;
     }
 
-    private void OnMouseUpAsButton() {
-        unitClicked.Invoke(this);
+    private void CreateHighlight() {
+        currentHighlight =
+            Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity);
+        currentHighlight.unitSpriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        currentHighlight.gameObject.transform.SetParent(this.transform);
+        currentHighlight.gameObject.transform.localPosition = Vector3.zero;
+    }
+
+    public Vector2Int GetPosition() {
+        Vector3 position = this.gameObject.transform.position;
+        return new Vector2Int((int) position.x, (int) position.y);
     }
 }

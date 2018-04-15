@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour {
     public int height = 8;
 
     public GameObject floor;
+    public Tile[,] tiles;
 
     private Transform mapHolder;
 
@@ -18,11 +19,13 @@ public class MapManager : MonoBehaviour {
 
     private void CreateTiles () {
         mapHolder = new GameObject("Map").transform;
+        tiles = new Tile[width, height];
 
         for (int x = 0; x < width; x += 1) {
             for (int y = 0; y < height; y += 1) {
                 GameObject floorInstance =
                     Instantiate(floor, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
+                tiles[x, y] = floorInstance.GetComponent<Tile>();
                 floorInstance.transform.SetParent(mapHolder);
             }
         }

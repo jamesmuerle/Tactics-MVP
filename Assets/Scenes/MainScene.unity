@@ -183,7 +183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 648850403}
-  grunt: {fileID: 1771641281817370, guid: c167307365658a0479bae8a778a23eda, type: 2}
+  grunt: {fileID: 1126851209514000, guid: dc2807b41ec14f64caac4e4f56e1a120, type: 2}
+  pathContainer: {fileID: 1547151751264570, guid: 343d2c33ddcc70746ae3c6dff25e8794,
+    type: 2}
 --- !u!1 &1107976972
 GameObject:
   m_ObjectHideFlags: 0
