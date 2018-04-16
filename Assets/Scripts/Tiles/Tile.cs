@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour {
     public UnityEvent<int, int> posEntered = new MousePositionEvent();
     public UnityEvent<int, int> posExited = new MousePositionEvent();
     public UnityEvent<int, int> posClicked = new MousePositionEvent();
+    public UnityEvent<int, int> posRightClicked = new MousePositionEvent();
 
     private void OnMouseEnter() {
         InvokeWithPosition(posEntered);
@@ -18,6 +19,11 @@ public class Tile : MonoBehaviour {
         InvokeWithPosition(posExited);
     }
 
+    private void Update() {
+        if (Input.GetMouseButtonUp(1)) {
+            InvokeWithPosition(posRightClicked);
+        }
+    }
     private void OnMouseUpAsButton() {
         InvokeWithPosition(posClicked);
     }

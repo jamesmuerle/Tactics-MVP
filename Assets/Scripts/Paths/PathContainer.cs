@@ -63,6 +63,16 @@ public class PathContainer : MonoBehaviour {
         RedrawPath();
     }
 
+    public void SetInvisible() {
+        foreach (Transform child in this.transform) {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void SetVisible() {
+        RedrawPath();
+    }
+
     private void RedrawPath() {
         foreach (Transform child in this.transform) {
             Destroy(child.gameObject);

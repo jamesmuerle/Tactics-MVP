@@ -8,17 +8,6 @@ public class Unit : MonoBehaviour {
     public UnitHighlighter highlightPrefab;
     public Animator unitAnimator;
 
-    public bool hasMoved = false;
-    public int movementRange;
-    private float movementSpeed = 4.0f;
-
-    public bool hasAttacked = false;
-    public int attackRange;
-    public int attackDamage;
-    public int armorPoints;
-
-    private UnitHighlighter currentHighlight;
-
     public bool isMoving {
         set {
             unitAnimator.SetBool("isMoving", value);
@@ -30,6 +19,19 @@ public class Unit : MonoBehaviour {
             unitAnimator.SetBool("isAttacking", value);
         }
     }
+
+    public bool hasMoved = false;
+    public int movementRange;
+    private float movementSpeed = 4.0f;
+
+    public bool hasAttacked = false;
+    public int attackRange;
+    public int attackDamage;
+    public int maxArmorPoints;
+
+    private int currentArmorPoints;
+
+    private UnitHighlighter currentHighlight;
 
     private List<Vector2Int> path = new List<Vector2Int>();
 
@@ -57,6 +59,10 @@ public class Unit : MonoBehaviour {
             this.enabled = false;
             this.isMoving = false;
         }
+    }
+
+    private void Awake() {
+        currentArmorPoints = maxArmorPoints;
     }
 
     private bool _isSelected = false;
@@ -120,7 +126,16 @@ public class Unit : MonoBehaviour {
     }
 
     public void ExecuteAttackOn(Unit otherUnit) {
+        this.isAttacking = false;
         this.hasAttacked = true;
+        otherUnit.TakeDamage(this.attackDamage);
         print("Unit was attacked");
+    }
+
+    public void TakeDamage(int damage) {
+        currentArmorPoints -= damage;
+        if (currentArmorPoints < 0) {
+            Destroy(this.gameObject);
+        }
     }
 }

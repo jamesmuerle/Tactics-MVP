@@ -49,6 +49,7 @@ public class UnitsManager : MonoBehaviour {
                 tiles[x, y].posClicked.AddListener(HandlePosClicked);
                 tiles[x, y].posEntered.AddListener(HandlePosEntered);
                 tiles[x, y].posExited.AddListener(HandlePosExited);
+                tiles[x, y].posRightClicked.AddListener(HandlePosRightClicked);
             }
         }
     }
@@ -69,16 +70,19 @@ public class UnitsManager : MonoBehaviour {
         }
         else if (selectedUnit) {
             if (selectedUnit.IsUnitInAttackRange(clickedUnit)) {
-                clickedUnit.ExecuteAttackOn(selectedUnit);
+                selectedUnit.ExecuteAttackOn(clickedUnit);
+                selectedUnit.isMoving = false;
+                DeselectUnit();
             }
-            DeselectUnit();
+            else {
+                selectedUnit.isMoving = false;
+                selectedUnit.isAttacking = false;
+                DeselectUnit();
+                SelectNewUnit(clickedUnit);
+            }
         }
-        else if (!clickedUnit.hasMoved) {
-            SelectUnitForMovement(clickedUnit);
-            path.SetSourceUnit(clickedUnit);
-        }
-        else if (!clickedUnit.hasAttacked) {
-            SelectUnitForAttacking(clickedUnit);
+        else {
+            SelectNewUnit(clickedUnit);
         }
     }
 
@@ -91,7 +95,7 @@ public class UnitsManager : MonoBehaviour {
                     selectedUnit.MoveThroughPath(path.GetPath());
                     units[oldPos.x, oldPos.y] = null;
                     units[newPos.x, newPos.y] = selectedUnit;
-                    DeselectUnit();
+                    ClearMovement();
                     SelectUnitForAttacking(selectedUnit);
                 }
             }
@@ -105,37 +109,68 @@ public class UnitsManager : MonoBehaviour {
     private void DeselectUnit() {
         selectedUnit.isSelected = false;
         selectedUnit = null;
+        ClearMovement();
+    }
+
+    private void ClearMovement() {
         path.Empty();
         mapManager.ClearHighlights();
     }
 
-    private void SelectUnitForMovement(Unit unitToSelect) {
+    private void SelectNewUnit(Unit unitToSelect) {
+        if (!unitToSelect.hasMoved) {
+            SelectUnitForMoving(unitToSelect);
+        }
+        else if (!unitToSelect.hasAttacked) {
+            SelectUnitForAttacking(unitToSelect);
+        }
+    }
+
+    private void SelectUnitForMoving(Unit unitToSelect) {
         unitToSelect.isSelected = true;
         unitToSelect.isMoving = true;
         selectedUnit = unitToSelect;
         mapManager.HighlightMovementRange(unitToSelect);
+        path.SetSourceUnit(unitToSelect);
     }
 
     private void SelectUnitForAttacking(Unit unitToSelect) {
         unitToSelect.isSelected = true;
-        unitToSelect.isMoving = false;
         unitToSelect.isAttacking = true;
         selectedUnit = unitToSelect;
         mapManager.HighlightAttackRange(unitToSelect);
     }
 
     private void HandlePosEntered(int x, int y) {
+        if (selectedUnit && !selectedUnit.hasMoved) {
+            path.GoToPosition(new Vector2Int(x, y));
+        }
+
         Unit unitAtPos = units[x, y];
         if (unitAtPos) {
             HandleUnitEntered(unitAtPos);
         }
-        if (selectedUnit && !selectedUnit.hasMoved) {
-            path.GoToPosition(new Vector2Int(x, y));
+        else {
+            HandleTileEntered(x, y);
         }
     }
 
     private void HandleUnitEntered(Unit enteredUnit) {
+        if (selectedUnit) {
+            bool isAttacking = selectedUnit != enteredUnit;
+            selectedUnit.isAttacking = isAttacking;
+            selectedUnit.isMoving = !isAttacking;
+            path.SetInvisible();
+        }
         enteredUnit.isHovered = true;
+    }
+
+    private void HandleTileEntered(int x, int y) {
+        if (selectedUnit && !selectedUnit.hasMoved) {
+            selectedUnit.isAttacking = false;
+            selectedUnit.isMoving = true;
+            path.SetVisible();
+        }
     }
 
     private void HandlePosExited(int x, int y) {
@@ -147,5 +182,13 @@ public class UnitsManager : MonoBehaviour {
 
     private void HandleUnitExited(Unit exitedUnit) {
         exitedUnit.isHovered = false;
+    }
+
+    private void HandlePosRightClicked(int x, int y) {
+        if (selectedUnit) {
+            selectedUnit.isMoving = false;
+            selectedUnit.isAttacking = false;
+            DeselectUnit();
+        }
     }
 }

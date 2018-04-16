@@ -1,19 +1,12 @@
 fileFormatVersion: 2
-guid: 7639acace7416904ea22de4c2e95aceb
-timeCreated: 1523770238
+guid: 1e2df7a3927e6d848a8aca63961ad35f
+timeCreated: 1523838749
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: a_2PadShot_0
-    21300002: a_2PadShot_1
-    21300004: a_2PadShot_2
-    21300006: a_2PadShot_3
-    21300008: a_2PadShot_4
-    21300010: a_2PadShot_5
-    21300012: a_2PadShot_6
-    21300014: a_2PadShot_7
-    21300016: a_2PadShot_8
-    21300018: a_2PadShot_9
+    21300000: attack_sel-sheet_0
+    21300002: attack_sel-sheet_1
+    21300004: attack_sel-sheet_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -90,7 +83,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: a_2PadShot_0
+      name: attack_sel-sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -104,7 +97,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: a_2PadShot_1
+      name: attack_sel-sheet_1
       rect:
         serializedVersion: 2
         x: 40
@@ -118,108 +111,10 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: a_2PadShot_2
+      name: attack_sel-sheet_2
       rect:
         serializedVersion: 2
         x: 80
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_3
-      rect:
-        serializedVersion: 2
-        x: 120
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_4
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_5
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_6
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_7
-      rect:
-        serializedVersion: 2
-        x: 280
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_8
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: a_2PadShot_9
-      rect:
-        serializedVersion: 2
-        x: 360
         y: 0
         width: 40
         height: 40
