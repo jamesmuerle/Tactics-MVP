@@ -52,10 +52,12 @@ public class MapManager : MonoBehaviour {
     }
 
     public void HighlightMovementRange(Unit unit) {
+        ClearHighlights();
         HighlightRangeWithPrefab(tileMoveHighlight, unit.GetPosition(), unit.movementRange);
     }
 
     public void HighlightAttackRange(Unit unit) {
+        ClearHighlights();
         HighlightRangeWithPrefab(tileAttackHighlight, unit.GetPosition(), unit.attackRange);
     }
 

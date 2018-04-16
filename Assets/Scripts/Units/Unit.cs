@@ -20,6 +20,12 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public bool isDone {
+        set {
+            unitAnimator.SetBool("isDone", value);
+        }
+    }
+
     public bool hasMoved = false;
     public int movementRange;
     private float movementSpeed = 4.0f;
@@ -129,13 +135,17 @@ public class Unit : MonoBehaviour {
         this.isAttacking = false;
         this.hasAttacked = true;
         otherUnit.TakeDamage(this.attackDamage);
-        print("Unit was attacked");
     }
 
     public void TakeDamage(int damage) {
         currentArmorPoints -= damage;
+        unitAnimator.SetTrigger("isHit");
         if (currentArmorPoints < 0) {
-            Destroy(this.gameObject);
+            unitAnimator.SetBool("isDead", true);
         }
+    }
+
+    public void OnDeathEnd() {
+        Destroy(this.gameObject);
     }
 }

@@ -66,11 +66,20 @@ public class UnitsManager : MonoBehaviour {
 
     private void HandleUnitClicked(Unit clickedUnit) {
         if (clickedUnit == selectedUnit) {
-            DeselectUnit();
+            if (selectedUnit.hasMoved) {
+                selectedUnit.isAttacking = false;
+                DeselectUnit();
+            }
+            else {
+                selectedUnit.hasMoved = true;
+                selectedUnit.isMoving = false;
+                SelectUnitForAttacking(selectedUnit);
+            }
         }
-        else if (selectedUnit) {
+        else if (selectedUnit && selectedUnit.hasMoved && !selectedUnit.hasAttacked) {
             if (selectedUnit.IsUnitInAttackRange(clickedUnit)) {
                 selectedUnit.ExecuteAttackOn(clickedUnit);
+                selectedUnit.isDone = true;
                 selectedUnit.isMoving = false;
                 DeselectUnit();
             }
@@ -97,6 +106,11 @@ public class UnitsManager : MonoBehaviour {
                     units[newPos.x, newPos.y] = selectedUnit;
                     ClearMovement();
                     SelectUnitForAttacking(selectedUnit);
+                }
+                else {
+                    selectedUnit.isMoving = false;
+                    selectedUnit.isAttacking = false;
+                    DeselectUnit();
                 }
             }
             else {
@@ -156,21 +170,12 @@ public class UnitsManager : MonoBehaviour {
     }
 
     private void HandleUnitEntered(Unit enteredUnit) {
-        if (selectedUnit) {
-            bool isAttacking = selectedUnit != enteredUnit;
-            selectedUnit.isAttacking = isAttacking;
-            selectedUnit.isMoving = !isAttacking;
-            path.SetInvisible();
-        }
+        path.SetInvisible();
         enteredUnit.isHovered = true;
     }
 
     private void HandleTileEntered(int x, int y) {
-        if (selectedUnit && !selectedUnit.hasMoved) {
-            selectedUnit.isAttacking = false;
-            selectedUnit.isMoving = true;
-            path.SetVisible();
-        }
+        path.SetVisible();
     }
 
     private void HandlePosExited(int x, int y) {

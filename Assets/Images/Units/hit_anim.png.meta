@@ -1,21 +1,15 @@
 fileFormatVersion: 2
-guid: 5f72a9d165b746345b41127def952469
-timeCreated: 1523834368
+guid: bffd2736a376fa341bbd3059a64516dc
+timeCreated: 1523846104
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Death_0
-    21300002: Death_1
-    21300004: Death_2
-    21300006: Death_3
-    21300008: Death_4
-    21300010: Death_5
-    21300012: Death_6
-    21300014: Death_7
-    21300016: Death_8
-    21300018: Death_9
-    21300020: Death_10
-    21300022: Death_11
+    21300000: hit_anim_0
+    21300002: hit_anim_1
+    21300004: hit_anim_2
+    21300006: hit_anim_3
+    21300008: hit_anim_4
+    21300010: hit_anim_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -92,7 +86,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Death_0
+      name: hit_anim_0
       rect:
         serializedVersion: 2
         x: 0
@@ -106,7 +100,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Death_1
+      name: hit_anim_1
       rect:
         serializedVersion: 2
         x: 40
@@ -120,7 +114,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Death_2
+      name: hit_anim_2
       rect:
         serializedVersion: 2
         x: 80
@@ -134,7 +128,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Death_3
+      name: hit_anim_3
       rect:
         serializedVersion: 2
         x: 120
@@ -148,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Death_4
+      name: hit_anim_4
       rect:
         serializedVersion: 2
         x: 160
@@ -162,94 +156,10 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Death_5
+      name: hit_anim_5
       rect:
         serializedVersion: 2
         x: 200
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_6
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_7
-      rect:
-        serializedVersion: 2
-        x: 280
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_8
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_9
-      rect:
-        serializedVersion: 2
-        x: 360
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_10
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 0
-        width: 40
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Death_11
-      rect:
-        serializedVersion: 2
-        x: 440
         y: 0
         width: 40
         height: 40
