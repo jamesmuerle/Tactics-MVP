@@ -145,8 +145,9 @@ MonoBehaviour:
   width: 8
   height: 8
   floor: {fileID: 1645292641620530, guid: 86e2138590195624d9eb8dabbf5847fb, type: 2}
-  tileHighlight: {fileID: 1203744979793574, guid: ed4d8845c362cbe4686d399296b235f0,
+  tileMoveHighlight: {fileID: 1203744979793574, guid: ed4d8845c362cbe4686d399296b235f0,
     type: 2}
+  tileAttackHighlight: {fileID: 0}
 --- !u!114 &648850404
 MonoBehaviour:
   m_ObjectHideFlags: 0

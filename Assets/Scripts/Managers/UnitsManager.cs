@@ -58,7 +58,7 @@ public class UnitsManager : MonoBehaviour {
         if (unitAtPos) {
             HandleUnitClicked(unitAtPos);
         }
-        else if (selectedUnit) {
+        else {
             HandleTileClicked(new Vector2Int(x, y));
         }
     }
@@ -67,29 +67,39 @@ public class UnitsManager : MonoBehaviour {
         if (clickedUnit == selectedUnit) {
             DeselectUnit();
         }
-        else {
-            if (selectedUnit) {
-                selectedUnit.isMoving = false;
-                DeselectUnit();
+        else if (selectedUnit) {
+            if (selectedUnit.IsUnitInAttackRange(clickedUnit)) {
+                clickedUnit.ExecuteAttackOn(selectedUnit);
             }
-
-            SelectUnit(clickedUnit);
+            DeselectUnit();
+        }
+        else if (!clickedUnit.hasMoved) {
+            SelectUnitForMovement(clickedUnit);
             path.SetSourceUnit(clickedUnit);
+        }
+        else if (!clickedUnit.hasAttacked) {
+            SelectUnitForAttacking(clickedUnit);
         }
     }
 
     private void HandleTileClicked(Vector2Int clickedPosition) {
-        Vector2Int oldPos = selectedUnit.GetPosition();
-        Vector2Int newPos = path.GetTarget();
-        if (newPos == clickedPosition) {
-            selectedUnit.MoveThroughPath(path.GetPath());
-            units[oldPos.x, oldPos.y] = null;
-            units[newPos.x, newPos.y] = selectedUnit;
+        if (selectedUnit) {
+            if (!selectedUnit.hasMoved) {
+                Vector2Int oldPos = selectedUnit.GetPosition();
+                Vector2Int newPos = path.GetTarget();
+                if (newPos == clickedPosition) {
+                    selectedUnit.MoveThroughPath(path.GetPath());
+                    units[oldPos.x, oldPos.y] = null;
+                    units[newPos.x, newPos.y] = selectedUnit;
+                    DeselectUnit();
+                    SelectUnitForAttacking(selectedUnit);
+                }
+            }
+            else {
+                selectedUnit.isMoving = false;
+                DeselectUnit();
+            }
         }
-        else {
-            selectedUnit.isMoving = false;
-        }
-        DeselectUnit();
     }
 
     private void DeselectUnit() {
@@ -99,11 +109,19 @@ public class UnitsManager : MonoBehaviour {
         mapManager.ClearHighlights();
     }
 
-    private void SelectUnit(Unit unitToSelect) {
+    private void SelectUnitForMovement(Unit unitToSelect) {
         unitToSelect.isSelected = true;
         unitToSelect.isMoving = true;
         selectedUnit = unitToSelect;
         mapManager.HighlightMovementRange(unitToSelect);
+    }
+
+    private void SelectUnitForAttacking(Unit unitToSelect) {
+        unitToSelect.isSelected = true;
+        unitToSelect.isMoving = false;
+        unitToSelect.isAttacking = true;
+        selectedUnit = unitToSelect;
+        mapManager.HighlightAttackRange(unitToSelect);
     }
 
     private void HandlePosEntered(int x, int y) {
@@ -111,7 +129,7 @@ public class UnitsManager : MonoBehaviour {
         if (unitAtPos) {
             HandleUnitEntered(unitAtPos);
         }
-        if (selectedUnit) {
+        if (selectedUnit && !selectedUnit.hasMoved) {
             path.GoToPosition(new Vector2Int(x, y));
         }
     }

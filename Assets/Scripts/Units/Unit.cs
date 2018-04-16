@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,8 +7,15 @@ using UnityEngine.Events;
 public class Unit : MonoBehaviour {
     public UnitHighlighter highlightPrefab;
     public Animator unitAnimator;
+
+    public bool hasMoved = false;
     public int movementRange;
     private float movementSpeed = 4.0f;
+
+    public bool hasAttacked = false;
+    public int attackRange;
+    public int attackDamage;
+    public int armorPoints;
 
     private UnitHighlighter currentHighlight;
 
@@ -17,10 +25,17 @@ public class Unit : MonoBehaviour {
         }
     }
 
+    public bool isAttacking {
+        set {
+            unitAnimator.SetBool("isAttacking", value);
+        }
+    }
+
     private List<Vector2Int> path = new List<Vector2Int>();
 
     public void MoveThroughPath(List<Vector2Int> path) {
         this.path = path;
+        this.hasMoved = true;
         this.enabled = true;
     }
 
@@ -89,7 +104,23 @@ public class Unit : MonoBehaviour {
     }
 
     public Vector2Int GetPosition() {
-        Vector3 position = this.gameObject.transform.position;
-        return new Vector2Int((int) position.x, (int) position.y);
+        int pathSize = path.Count;
+        if (pathSize > 0) {
+            return path[pathSize - 1];
+        }
+        else {
+            Vector3 position = this.gameObject.transform.position;
+            return new Vector2Int((int)position.x, (int)position.y);
+        }
+    }
+
+    public bool IsUnitInAttackRange(Unit otherUnit) {
+        Vector2Int posDifference = otherUnit.GetPosition() - GetPosition();
+        return Math.Abs(posDifference.x) + Math.Abs(posDifference.y) <= attackRange;
+    }
+
+    public void ExecuteAttackOn(Unit otherUnit) {
+        this.hasAttacked = true;
+        print("Unit was attacked");
     }
 }
