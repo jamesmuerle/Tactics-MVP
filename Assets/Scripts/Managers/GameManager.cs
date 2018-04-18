@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour {
     public UnitsManager unitsManager;
 
 	void Awake () {
-        mapManager = GetComponent<MapManager>();
         InitGame();
 	}
 

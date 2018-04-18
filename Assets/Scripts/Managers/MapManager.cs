@@ -8,7 +8,8 @@ public class MapManager : MonoBehaviour {
     public int height = 8;
 
     public GameObject floor;
-    public GameObject tileHighlight;
+    public GameObject tileMoveHighlight;
+    public GameObject tileAttackHighlight;
     public Tile[,] tiles;
 
     private Transform mapHolder;
@@ -51,21 +52,29 @@ public class MapManager : MonoBehaviour {
     }
 
     public void HighlightMovementRange(Unit unit) {
-        Vector2Int basePos = unit.GetPosition();
-        int maxDistance = unit.movementRange;
-        for (int x = basePos.x - maxDistance; x <= basePos.x + maxDistance; x += 1) {
-            int maxYDistance = maxDistance - Math.Abs(x - basePos.x);
+        ClearHighlights();
+        HighlightRangeWithPrefab(tileMoveHighlight, unit.GetPosition(), unit.movementRange);
+    }
+
+    public void HighlightAttackRange(Unit unit) {
+        ClearHighlights();
+        HighlightRangeWithPrefab(tileAttackHighlight, unit.GetPosition(), unit.attackRange);
+    }
+
+    private void HighlightRangeWithPrefab(GameObject highlightPrefab, Vector2Int basePos, int range) {
+        for (int x = basePos.x - range; x <= basePos.x + range; x += 1) {
+            int maxYDistance = range - Math.Abs(x - basePos.x);
             for (int y = basePos.y - maxYDistance; y <= basePos.y + maxYDistance; y += 1) {
                 if (x >= 0 && x < width && y >= 0 && y < height) {
-                    AddHighlightToPos(x, y);
+                    AddHighlightToPos(highlightPrefab, x, y);
                 }
             }
         }
     }
 
-    private void AddHighlightToPos(int x, int y) {
+    private void AddHighlightToPos(GameObject highlightPrefab, int x, int y) {
         GameObject highlight =
-            Instantiate(tileHighlight, new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+            Instantiate(highlightPrefab, new Vector3(x, y, 0), Quaternion.identity) as GameObject;
         highlight.transform.SetParent(tileHighlightsHolder);
     }
 }

@@ -73,7 +73,12 @@ MonoBehaviour:
   highlightPrefab: {fileID: 114872103858794992, guid: 3c78a6b03650e224f8c5e0c988fb8f68,
     type: 2}
   unitAnimator: {fileID: 95136228354366732}
-  movementRange: 4
+  hasMoved: 0
+  movementRange: 2
+  hasAttacked: 0
+  attackRange: 2
+  attackDamage: 1
+  maxArmorPoints: 2
 --- !u!212 &212922715349791834
 SpriteRenderer:
   m_ObjectHideFlags: 1
