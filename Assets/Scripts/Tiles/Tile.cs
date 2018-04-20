@@ -5,11 +5,11 @@ using UnityEngine.Events;
 
 public class Tile : MonoBehaviour {
 
-    private class MousePositionEvent : UnityEvent<int, int> { }
-    public UnityEvent<int, int> posEntered = new MousePositionEvent();
-    public UnityEvent<int, int> posExited = new MousePositionEvent();
-    public UnityEvent<int, int> posClicked = new MousePositionEvent();
-    public UnityEvent<int, int> posRightClicked = new MousePositionEvent();
+    private class MousePositionEvent : UnityEvent<Vector2Int> { }
+    public UnityEvent<Vector2Int> posEntered = new MousePositionEvent();
+    public UnityEvent<Vector2Int> posExited = new MousePositionEvent();
+    public UnityEvent<Vector2Int> posClicked = new MousePositionEvent();
+    public UnityEvent<Vector2Int> posRightClicked = new MousePositionEvent();
 
     private void OnMouseEnter() {
         InvokeWithPosition(posEntered);
@@ -28,8 +28,8 @@ public class Tile : MonoBehaviour {
         InvokeWithPosition(posClicked);
     }
 
-    private void InvokeWithPosition(UnityEvent<int, int> unityEvent) {
+    private void InvokeWithPosition(UnityEvent<Vector2Int> unityEvent) {
         Vector3 position = this.gameObject.transform.position;
-        unityEvent.Invoke((int)position.x, (int)position.y);
+        unityEvent.Invoke(new Vector2Int((int) position.x, (int) position.y));
     }
 }

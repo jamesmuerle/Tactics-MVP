@@ -4,39 +4,16 @@ using UnityEngine;
 
 public class UnitsManager : MonoBehaviour {
     public MapManager mapManager;
-    public GameObject grunt;
     public GameObject pathContainer;
-
-    private Transform unitsHolder;
-    private Unit[,] units;
 
     private Unit selectedUnit;
     private PathContainer path;
 
-    public void SetupUnits () {
-        AddUnits();
+    public void Initialize () {
         InitializePath();
         BindToMapEvents();
     }
-
-    private void AddUnits() {
-        unitsHolder = new GameObject("Units").transform;
-        units = new Unit[mapManager.width, mapManager.height];
-
-        AddUnitAt(4, 4);
-        AddUnitAt(3, 4);
-        AddUnitAt(2, 4);
-        AddUnitAt(7, 5);
-        AddUnitAt(6, 3);
-    }
-
-    private void AddUnitAt(int x, int y) {
-        GameObject gruntInstance =
-            Instantiate(grunt, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-        gruntInstance.transform.SetParent(unitsHolder);
-        units[x, y] = gruntInstance.GetComponent<Unit>();
-    }
-
+    
     private void InitializePath() {
         path = Instantiate(pathContainer, Vector3.zero, Quaternion.identity)
             .GetComponent<PathContainer>();
@@ -54,13 +31,13 @@ public class UnitsManager : MonoBehaviour {
         }
     }
 
-    private void HandlePosClicked(int x, int y) {
-        Unit unitAtPos = units[x, y];
+    private void HandlePosClicked(Vector2Int pos) {
+        Unit unitAtPos = mapManager.GetUnitAt(pos);
         if (unitAtPos) {
             HandleUnitClicked(unitAtPos);
         }
         else {
-            HandleTileClicked(new Vector2Int(x, y));
+            HandleTileClicked(pos);
         }
     }
 
@@ -98,12 +75,10 @@ public class UnitsManager : MonoBehaviour {
     private void HandleTileClicked(Vector2Int clickedPosition) {
         if (selectedUnit) {
             if (!selectedUnit.hasMoved) {
-                Vector2Int oldPos = selectedUnit.GetPosition();
                 Vector2Int newPos = path.GetTarget();
                 if (newPos == clickedPosition) {
+                    mapManager.UpdateUnitPosition(selectedUnit, newPos);
                     selectedUnit.MoveThroughPath(path.GetPath());
-                    units[oldPos.x, oldPos.y] = null;
-                    units[newPos.x, newPos.y] = selectedUnit;
                     ClearMovement();
                     SelectUnitForAttacking(selectedUnit);
                 }
@@ -155,17 +130,17 @@ public class UnitsManager : MonoBehaviour {
         mapManager.HighlightAttackRange(unitToSelect);
     }
 
-    private void HandlePosEntered(int x, int y) {
+    private void HandlePosEntered(Vector2Int pos) {
         if (selectedUnit && !selectedUnit.hasMoved) {
-            path.GoToPosition(new Vector2Int(x, y));
+            path.GoToPosition(pos);
         }
 
-        Unit unitAtPos = units[x, y];
+        Unit unitAtPos = mapManager.GetUnitAt(pos);
         if (unitAtPos) {
             HandleUnitEntered(unitAtPos);
         }
         else {
-            HandleTileEntered(x, y);
+            HandleTileEntered(pos);
         }
     }
 
@@ -174,12 +149,12 @@ public class UnitsManager : MonoBehaviour {
         enteredUnit.isHovered = true;
     }
 
-    private void HandleTileEntered(int x, int y) {
+    private void HandleTileEntered(Vector2Int pos) {
         path.SetVisible();
     }
 
-    private void HandlePosExited(int x, int y) {
-        Unit unitAtPos = units[x, y];
+    private void HandlePosExited(Vector2Int pos) {
+        Unit unitAtPos = mapManager.GetUnitAt(pos);
         if (unitAtPos) {
             HandleUnitExited(unitAtPos);
         }
@@ -189,7 +164,7 @@ public class UnitsManager : MonoBehaviour {
         exitedUnit.isHovered = false;
     }
 
-    private void HandlePosRightClicked(int x, int y) {
+    private void HandlePosRightClicked(Vector2Int pos) {
         if (selectedUnit) {
             selectedUnit.isMoving = false;
             selectedUnit.isAttacking = false;
