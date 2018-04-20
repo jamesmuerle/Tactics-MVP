@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class Unit : MonoBehaviour {
     public UnitHighlighter highlightPrefab;
     public Animator unitAnimator;
+    public ArmorCounter armorCounterPrefab;
 
     public bool isMoving {
         set {
@@ -35,16 +36,15 @@ public class Unit : MonoBehaviour {
     public int attackDamage;
     public int maxArmorPoints;
 
-    private int currentArmorPoints;
-
     private UnitHighlighter currentHighlight;
-
+    private ArmorCounter currentArmorCounter;
     private List<Vector2Int> path = new List<Vector2Int>();
 
-    public void MoveThroughPath(List<Vector2Int> path) {
-        this.path = path;
-        this.hasMoved = true;
-        this.enabled = true;
+    private void Awake() {
+        currentArmorCounter = Instantiate(armorCounterPrefab, Vector3.zero, Quaternion.identity);
+        currentArmorCounter.transform.SetParent(this.transform);
+        currentArmorCounter.armorPoints = maxArmorPoints;
+        currentArmorCounter.transform.localPosition = new Vector3(0.25f, -0.25f, 0);
     }
 
     private void Update() {
@@ -67,8 +67,10 @@ public class Unit : MonoBehaviour {
         }
     }
 
-    private void Awake() {
-        currentArmorPoints = maxArmorPoints;
+    public void MoveThroughPath(List<Vector2Int> path) {
+        this.path = path;
+        this.hasMoved = true;
+        this.enabled = true;
     }
 
     private bool _isSelected = false;
@@ -138,9 +140,9 @@ public class Unit : MonoBehaviour {
     }
 
     public void TakeDamage(int damage) {
-        currentArmorPoints -= damage;
+        currentArmorCounter.armorPoints -= damage;
         unitAnimator.SetTrigger("isHit");
-        if (currentArmorPoints < 0) {
+        if (currentArmorCounter.armorPoints < 0) {
             unitAnimator.SetBool("isDead", true);
         }
     }

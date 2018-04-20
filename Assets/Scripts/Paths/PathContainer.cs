@@ -8,11 +8,6 @@ public class PathContainer : MonoBehaviour {
     public GameObject pathBend;
     public GameObject pathEnd;
 
-    private static Vector2Int NORTH = new Vector2Int(0, 1);
-    private static Vector2Int WEST = new Vector2Int(-1, 0);
-    private static Vector2Int SOUTH = new Vector2Int(0, -1);
-    private static Vector2Int EAST = new Vector2Int(1, 0);
-
     private Unit sourceUnit;
     private List<Vector2Int> path = new List<Vector2Int>();
 
@@ -34,20 +29,20 @@ public class PathContainer : MonoBehaviour {
             Vector2Int changeVector = targetPos - GetTarget();
             while (changeVector.magnitude > 1 && path.Count < sourceUnit.movementRange) {
                 if (changeVector.x > 0) {
-                    GoToPosition(GetTarget() + EAST);
-                    changeVector -= EAST;
+                    GoToPosition(GetTarget() + Directions.EAST);
+                    changeVector -= Directions.EAST;
                 }
                 else if (changeVector.x < 0) {
-                    GoToPosition(GetTarget() + WEST);
-                    changeVector -= WEST;
+                    GoToPosition(GetTarget() + Directions.WEST);
+                    changeVector -= Directions.WEST;
                 }
                 else if (changeVector.y > 0) {
-                    GoToPosition(GetTarget() + NORTH);
-                    changeVector -= NORTH;
+                    GoToPosition(GetTarget() + Directions.NORTH);
+                    changeVector -= Directions.NORTH;
                 }
                 else if (changeVector.y < 0) {
-                    GoToPosition(GetTarget() + SOUTH);
-                    changeVector -= SOUTH;
+                    GoToPosition(GetTarget() + Directions.SOUTH);
+                    changeVector -= Directions.SOUTH;
                 }
             }
 
@@ -109,16 +104,16 @@ public class PathContainer : MonoBehaviour {
     }
 
     private int GetRotationAngleForDirection(Vector2Int direction) {
-        if (direction == NORTH) {
+        if (direction == Directions.NORTH) {
             return 0;
         }
-        else if (direction == WEST) {
+        else if (direction == Directions.WEST) {
             return 90;
         }
-        else if (direction == SOUTH) {
+        else if (direction == Directions.SOUTH) {
             return 180;
         }
-        else if (direction == EAST) {
+        else if (direction == Directions.EAST) {
             return 270;
         }
         else {
@@ -131,36 +126,36 @@ public class PathContainer : MonoBehaviour {
         GameObject pathPrefab = null;
 
         Vector2Int direction = nextPosition - prevPosition;
-        if (direction == NORTH * 2 || direction == SOUTH * 2) {
+        if (direction == Directions.NORTH * 2 || direction == Directions.SOUTH * 2) {
             rotAngle = 0;
             pathPrefab = pathStraight;
         }
-        else if (direction == WEST * 2 || direction == EAST * 2) {
+        else if (direction == Directions.WEST * 2 || direction == Directions.EAST * 2) {
             rotAngle = 90;
             pathPrefab = pathStraight;
         }
-        else if (direction == NORTH + WEST || direction == SOUTH + EAST) {
+        else if (direction == Directions.NORTHWEST || direction == Directions.SOUTHEAST) {
             pathPrefab = pathBend;
 
             Vector2Int outDirection = nextPosition - currPosition;
-            if (outDirection == WEST || outDirection == SOUTH) {
+            if (outDirection == Directions.WEST || outDirection == Directions.SOUTH) {
                 rotAngle = 0;
             }
-            else if (outDirection == NORTH || outDirection == EAST) {
+            else if (outDirection == Directions.NORTH || outDirection == Directions.EAST) {
                 rotAngle = 180;
             }
             else {
                 ThrowBadDirectionException(direction);
             }
         }
-        else if (direction == NORTH + EAST || direction == SOUTH + WEST) {
+        else if (direction == Directions.NORTHEAST || direction == Directions.SOUTHWEST) {
             pathPrefab = pathBend;
 
             Vector2Int outDirection = nextPosition - currPosition;
-            if (outDirection == EAST || outDirection == SOUTH) {
+            if (outDirection == Directions.EAST || outDirection == Directions.SOUTH) {
                 rotAngle = 90;
             }
-            else if (outDirection == NORTH || outDirection == WEST) {
+            else if (outDirection == Directions.NORTH || outDirection == Directions.WEST) {
                 rotAngle = 270;
             }
             else {

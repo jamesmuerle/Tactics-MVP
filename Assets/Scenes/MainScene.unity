@@ -144,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 8
   height: 8
+  grunt: {fileID: 1126851209514000, guid: dc2807b41ec14f64caac4e4f56e1a120, type: 2}
   floor: {fileID: 1645292641620530, guid: 86e2138590195624d9eb8dabbf5847fb, type: 2}
   tileMoveHighlight: {fileID: 1203744979793574, guid: ed4d8845c362cbe4686d399296b235f0,
     type: 2}
@@ -187,7 +188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 648850403}
-  grunt: {fileID: 1126851209514000, guid: dc2807b41ec14f64caac4e4f56e1a120, type: 2}
   pathContainer: {fileID: 1547151751264570, guid: 343d2c33ddcc70746ae3c6dff25e8794,
     type: 2}
 --- !u!1 &1107976972
