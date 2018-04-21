@@ -53,3 +53,6 @@ TagManager:
   - name: UnitHighlight
     uniqueID: 4110789905
     locked: 0
+  - name: ArmorCounter
+    uniqueID: 931301555
+    locked: 0

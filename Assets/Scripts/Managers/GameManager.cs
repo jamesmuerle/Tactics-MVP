@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 	}
 
     private void InitGame () {
-        mapManager.SetupBoard();
-        unitsManager.SetupUnits();
+        mapManager.Initialize();
+        unitsManager.Initialize();
     }
 }

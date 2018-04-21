@@ -73,6 +73,8 @@ MonoBehaviour:
   highlightPrefab: {fileID: 114872103858794992, guid: 3c78a6b03650e224f8c5e0c988fb8f68,
     type: 2}
   unitAnimator: {fileID: 95136228354366732}
+  armorCounterPrefab: {fileID: 114252449824229902, guid: ea5d1408429bead479a99c81c72dc92b,
+    type: 2}
   hasMoved: 0
   movementRange: 2
   hasAttacked: 0
