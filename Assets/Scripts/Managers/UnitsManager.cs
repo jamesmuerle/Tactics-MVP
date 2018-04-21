@@ -31,105 +31,100 @@ public class UnitsManager : MonoBehaviour {
         }
     }
 
+    /**
+     * Handle a left mouse click on a position.
+     */
     private void HandlePosClicked(Vector2Int pos) {
         Unit unitAtPos = mapManager.GetUnitAt(pos);
-        if (unitAtPos) {
-            HandleUnitClicked(unitAtPos);
+        if (selectedUnit && unitAtPos) {
+            PerformActionWithUnitOnUnit(selectedUnit, unitAtPos);
+        }
+        else if (selectedUnit) {
+            PerformActionWithUnitOnTile(selectedUnit, pos);
+        }
+        else if (unitAtPos) {
+            SelectUnit(unitAtPos);
         }
         else {
-            HandleTileClicked(pos);
+            DeselectUnit();
         }
     }
 
-    private void HandleUnitClicked(Unit clickedUnit) {
-        if (clickedUnit == selectedUnit) {
-            if (selectedUnit.hasMoved) {
-                selectedUnit.isAttacking = false;
+    private void PerformActionWithUnitOnUnit(Unit sourceUnit, Unit targetUnit) {
+        if (!sourceUnit.hasAttacked && sourceUnit.IsUnitInAttackRange(targetUnit)) {
+            if (!sourceUnit.isMoving) {
+                sourceUnit.ExecuteAttackOn(targetUnit);
+                if (targetUnit.isDead) {
+                    mapManager.RemoveUnit(targetUnit);
+                }
                 DeselectUnit();
-            }
-            else {
-                selectedUnit.hasMoved = true;
-                selectedUnit.isMoving = false;
-                SelectUnitForAttacking(selectedUnit);
             }
         }
-        else if (selectedUnit && selectedUnit.hasMoved && !selectedUnit.hasAttacked) {
-            if (selectedUnit.IsUnitInAttackRange(clickedUnit)) {
-                selectedUnit.ExecuteAttackOn(clickedUnit);
-                selectedUnit.isDone = true;
-                selectedUnit.isMoving = false;
-                DeselectUnit();
-            }
-            else {
-                selectedUnit.isMoving = false;
-                selectedUnit.isAttacking = false;
-                DeselectUnit();
-                SelectNewUnit(clickedUnit);
-            }
+        else if (sourceUnit == targetUnit && !sourceUnit.hasMoved) {
+            MoveUnitTo(sourceUnit, sourceUnit.GetPosition());
         }
         else {
-            SelectNewUnit(clickedUnit);
+            DeselectUnit();
+            SelectUnit(targetUnit);
         }
     }
 
-    private void HandleTileClicked(Vector2Int clickedPosition) {
-        if (selectedUnit) {
-            if (!selectedUnit.hasMoved) {
-                Vector2Int newPos = path.GetTarget();
-                if (newPos == clickedPosition) {
-                    mapManager.UpdateUnitPosition(selectedUnit, newPos);
-                    selectedUnit.MoveThroughPath(path.GetPath());
-                    ClearMovement();
-                    SelectUnitForAttacking(selectedUnit);
-                }
-                else {
-                    selectedUnit.isMoving = false;
-                    selectedUnit.isAttacking = false;
-                    DeselectUnit();
-                }
-            }
-            else {
-                selectedUnit.isMoving = false;
-                DeselectUnit();
-            }
+    private void PerformActionWithUnitOnTile(Unit sourceUnit, Vector2Int targetPos) {
+        if (!sourceUnit.hasMoved && path.GetTarget() == targetPos) {
+            MoveUnitTo(sourceUnit, targetPos);
         }
+        else {
+            DeselectUnit();
+        }
+    }
+
+    private void MoveUnitTo(Unit sourceUnit, Vector2Int targetPos) {
+        mapManager.UpdateUnitPosition(selectedUnit, targetPos);
+        selectedUnit.MoveThroughPath(path.GetPath());
+        path.Empty();
+        SelectUnitForAttacking(selectedUnit);
+    }
+
+    /**
+     * Helper methods for unit selection.
+     */
+    private void SelectUnit(Unit targetUnit) {
+        if (!targetUnit.hasMoved) {
+            SelectUnitForMoving(targetUnit);
+        }
+        else if (!targetUnit.hasAttacked) {
+            SelectUnitForAttacking(targetUnit);
+        }
+    }
+
+    private void SelectUnitForMoving(Unit targetUnit) {
+        targetUnit.isSelected = true;
+        selectedUnit = targetUnit;
+        mapManager.ClearHighlights();
+        mapManager.HighlightMovementRange(targetUnit);
+        mapManager.HighlightAttackRange(targetUnit);
+        path.SetSourceUnit(targetUnit);
+    }
+
+    private void SelectUnitForAttacking(Unit targetUnit) {
+        targetUnit.isSelected = true;
+        selectedUnit = targetUnit;
+        mapManager.ClearHighlights();
+        mapManager.HighlightAttackRange(targetUnit);
     }
 
     private void DeselectUnit() {
-        selectedUnit.isSelected = false;
-        selectedUnit = null;
-        ClearMovement();
-    }
-
-    private void ClearMovement() {
-        path.Empty();
-        mapManager.ClearHighlights();
-    }
-
-    private void SelectNewUnit(Unit unitToSelect) {
-        if (!unitToSelect.hasMoved) {
-            SelectUnitForMoving(unitToSelect);
-        }
-        else if (!unitToSelect.hasAttacked) {
-            SelectUnitForAttacking(unitToSelect);
+        if (selectedUnit) {
+            selectedUnit.isSelected = false;
+            selectedUnit = null;
+            path.Empty();
+            mapManager.ClearHighlights();
         }
     }
 
-    private void SelectUnitForMoving(Unit unitToSelect) {
-        unitToSelect.isSelected = true;
-        unitToSelect.isMoving = true;
-        selectedUnit = unitToSelect;
-        mapManager.HighlightMovementRange(unitToSelect);
-        path.SetSourceUnit(unitToSelect);
-    }
-
-    private void SelectUnitForAttacking(Unit unitToSelect) {
-        unitToSelect.isSelected = true;
-        unitToSelect.isAttacking = true;
-        selectedUnit = unitToSelect;
-        mapManager.HighlightAttackRange(unitToSelect);
-    }
-
+    /**
+     * Handle the mouse entering a position.
+     */
     private void HandlePosEntered(Vector2Int pos) {
         if (selectedUnit && !selectedUnit.hasMoved) {
             path.GoToPosition(pos);
@@ -153,6 +148,9 @@ public class UnitsManager : MonoBehaviour {
         path.SetVisible();
     }
 
+    /**
+     * Handling the mouse exiting from a position.
+     */
     private void HandlePosExited(Vector2Int pos) {
         Unit unitAtPos = mapManager.GetUnitAt(pos);
         if (unitAtPos) {
@@ -164,11 +162,10 @@ public class UnitsManager : MonoBehaviour {
         exitedUnit.isHovered = false;
     }
 
+    /**
+     * Handle a right mouse click on a position.
+     */
     private void HandlePosRightClicked(Vector2Int pos) {
-        if (selectedUnit) {
-            selectedUnit.isMoving = false;
-            selectedUnit.isAttacking = false;
-            DeselectUnit();
-        }
+        DeselectUnit();
     }
 }

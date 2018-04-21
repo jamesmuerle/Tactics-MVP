@@ -77,6 +77,11 @@ public class MapManager : MonoBehaviour {
         units[newPos.x, newPos.y] = unit;
     }
 
+    public void RemoveUnit(Unit unit) {
+        Vector2Int pos = unit.GetPosition();
+        units[pos.x, pos.y] = null;
+    }
+
     public void ClearHighlights() {
         foreach (Transform mapHighlight in tileHighlightsHolder) {
             Destroy(mapHighlight.gameObject);
@@ -84,12 +89,10 @@ public class MapManager : MonoBehaviour {
     }
 
     public void HighlightMovementRange(Unit unit) {
-        ClearHighlights();
         HighlightRangeWithPrefab(tileMoveHighlight, unit.GetPosition(), unit.movementRange);
     }
 
     public void HighlightAttackRange(Unit unit) {
-        ClearHighlights();
         HighlightRangeWithPrefab(tileAttackHighlight, unit.GetPosition(), unit.attackRange);
     }
 
