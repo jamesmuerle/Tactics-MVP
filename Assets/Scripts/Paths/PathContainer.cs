@@ -10,6 +10,7 @@ public class PathContainer : MonoBehaviour {
 
     private Unit sourceUnit;
     private List<Vector2Int> path = new List<Vector2Int>();
+    private Dictionary<Vector2Int, List<Vector2Int>> possibleMoveTargets;
 
     public void SetSourceUnit(Unit unit) {
         Empty();
@@ -50,7 +51,17 @@ public class PathContainer : MonoBehaviour {
                 path.Add(targetPos);
                 RedrawPath();
             }
+            else if (possibleMoveTargets.ContainsKey(targetPos)) {
+                List<Vector2Int> newPath = new List<Vector2Int>();
+                newPath.AddRange(possibleMoveTargets[targetPos]);
+                path = newPath;
+                RedrawPath();
+            }
         }
+    }
+
+    public void SetPossibleMoveTargets(Dictionary<Vector2Int, List<Vector2Int>> possibleMoveTargets) {
+        this.possibleMoveTargets = possibleMoveTargets;
     }
 
     public void Empty() {

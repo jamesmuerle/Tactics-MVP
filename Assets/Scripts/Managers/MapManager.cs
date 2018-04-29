@@ -88,59 +88,32 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    public void HighlightMovementRange(Unit unit) {
-        HighlightRangeWithPrefab(tileMoveHighlight, unit.GetPosition(), unit.movementRange);
+    public Dictionary<Vector2Int, List<Vector2Int>> HighlightMovementRange(Unit unit) {
+        Dictionary<Vector2Int, List<Vector2Int>> possibleTargets =
+            PathUtils.SearchFromPos(unit.GetPosition(), unit.movementRange, pos => {
+                if (pos.x < width && pos.x >= 0 && pos.y < height && pos.y >= 0) {
+                    return units[pos.x, pos.y] != null;
+                }
+                else {
+                    return false;
+                }
+            });
+
+        foreach (Vector2Int target in possibleTargets.Keys) {
+            AddHighlightToPos(tileMoveHighlight, target.x, target.y);
+        }
+
+        return possibleTargets;
     }
 
     public void HighlightAttackRange(Unit unit) {
-        HighlightRangeWithPrefab(tileAttackHighlight, unit.GetPosition(), unit.attackRange);
-    }
-
-    private Dictionary<Vector2Int, List<Vector2Int>> SearchFromPos(
-        Vector2Int pos,
-        int maxDistance,
-        Func<Vector2Int, bool> isBlocked
-    ) {
-        Dictionary<Vector2Int, List<Vector2Int>> paths = new Dictionary<Vector2Int, List<Vector2Int>>();
-        paths[pos] = new List<Vector2Int>();
-        Dictionary<int, List<Vector2Int>> processQueue = new Dictionary<int, List<Vector2Int>>();
-        processQueue[0] = new List<Vector2Int> { pos };
-
-        for (int distance = 0; distance < maxDistance; distance += 1) {
-            processQueue[distance + 1] = new List<Vector2Int>();
-            foreach (Vector2Int posToProcess in processQueue[distance]) {
-                SearchSurroundingPositions(posToProcess, paths, processQueue, isBlocked);
-            }
-        }
-
-        return paths;
-    }
-
-    private void SearchSurroundingPositions(
-        Vector2Int pos,
-        Dictionary<Vector2Int, List<Vector2Int>> paths,
-        Dictionary<int, List<Vector2Int>> processQueue,
-        Func<Vector2Int, bool> isBlocked
-    )
-    {
-        foreach (Vector2Int direction in Directions.CARDINAL_DIRECTIONS) {
-            Vector2Int target = pos + direction;
-            if (!paths.ContainsKey(target) && !isBlocked(target)) {
-                List<Vector2Int> newPath = new List<Vector2Int>();
-                newPath.AddRange(paths[pos]);
-                newPath.Add(target);
-                paths[target] = newPath;
-                processQueue[newPath.Count].Add(target);
-            }
-        }
-    }
-
-    private void HighlightRangeWithPrefab(GameObject highlightPrefab, Vector2Int basePos, int range) {
+        Vector2Int basePos = unit.GetPosition();
+        int range = unit.attackRange;
         for (int x = basePos.x - range; x <= basePos.x + range; x += 1) {
             int maxYDistance = range - Math.Abs(x - basePos.x);
             for (int y = basePos.y - maxYDistance; y <= basePos.y + maxYDistance; y += 1) {
-                if (x >= 0 && x < width && y >= 0 && y < height) {
-                    AddHighlightToPos(highlightPrefab, x, y);
+                if (x >= 0 && x < width && y >= 0 && y < height && units[x, y] != null && units[x, y] != unit) {
+                    AddHighlightToPos(tileAttackHighlight, x, y);
                 }
             }
         }

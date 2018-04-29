@@ -101,9 +101,9 @@ public class UnitsManager : MonoBehaviour {
         targetUnit.isSelected = true;
         selectedUnit = targetUnit;
         mapManager.ClearHighlights();
-        mapManager.HighlightMovementRange(targetUnit);
-        mapManager.HighlightAttackRange(targetUnit);
         path.SetSourceUnit(targetUnit);
+        path.SetPossibleMoveTargets(mapManager.HighlightMovementRange(targetUnit));
+        mapManager.HighlightAttackRange(targetUnit);
     }
 
     private void SelectUnitForAttacking(Unit targetUnit) {
